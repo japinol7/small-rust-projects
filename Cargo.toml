@@ -1,0 +1,4 @@
+[workspace]
+members = [
+    "projects/various/src/hello_world_rust"
+]
