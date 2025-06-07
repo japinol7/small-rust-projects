@@ -1,4 +1,19 @@
 [workspace]
+resolver = "3"
 members = [
-    "projects/various/src/hello_world_rust"
+    "projects/cyber_dojo/balanced_parentheses/balanced_parentheses_take_01",
+    "projects/cyber_dojo/filename_range/filename_range_take_01",
+    "projects/cyber_dojo/lcd_digits/lcd_digits_take_01",
+    "projects/cyber_dojo/fizzbuzz/fizzbuzz_take_01",
+    "projects/cyber_dojo/fizzbuzz_plus/fizzbuzz_plus_take_01",
+    "projects/cyber_dojo/game_of_life/game_of_life_take_01",
+    "projects/cyber_dojo/isbn/isbn_take_01",
+    "projects/cyber_dojo/leap_year/leap_year_take_01",
+    "projects/cyber_dojo/print_diamond/print_diamond_take_01",
+    "projects/cyber_dojo/reverse_roman/reverse_roman_take_01",
+    "projects/cyber_dojo/roman_numerals/roman_numerals_take_01",
+    "projects/various/src/hello_world_rust",
+    "projects/various/src/quicksort",
+    "projects/various/src/quicksort_int",
+    "projects/various/src/roman_numerals_full"
 ]
