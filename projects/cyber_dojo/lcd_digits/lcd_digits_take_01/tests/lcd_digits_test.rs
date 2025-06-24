@@ -32,7 +32,10 @@ const DIGITS_REPR_1234567890_SEPARATOR_BIG: &str = "\
 ..|     ._|     ._|     |_|     |_.     |_.     ..|     |_|     |_|     |.|\n\
 ..|     |_.     ._|     ..|     ._|     |_|     ..|     |_|     ..|     |_|\n";
 
-const DIGITS_REPR_910: &str = "._. ... ._.\n|_| ..| |.|\n..| ..| |_|\n";
+const DIGITS_REPR_910: &str = "\
+._. ... ._.\n\
+|_| ..| |.|\n\
+..| ..| |_|\n";
 
 // Replace LCD digit cells with test cells
 fn replace_lcd_digit_cells(digit_cell_str: &str) -> String {
@@ -64,7 +67,7 @@ fn replace_lcd_digit_separators(
 #[case::digit_eight(8, DIGITS_REPR_8)]
 #[case::digit_nine(9, DIGITS_REPR_9)]
 #[case::all_digits(1234567890, DIGITS_REPR_1234567890)]
-#[case::three_digits(910, DIGITS_REPR_910)]
+#[case::three_digits_910(910, DIGITS_REPR_910)]
 fn test_generate_lcd_digits(#[case] input: i32, #[case] expected: &str) {
     let lcd = LcdDigits::new();
     let result = lcd.generate(input, None).unwrap();
