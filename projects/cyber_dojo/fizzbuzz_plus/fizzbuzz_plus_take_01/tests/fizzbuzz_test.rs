@@ -3,16 +3,17 @@ use rstest::rstest;
 use fizzbuzz_plus::{fizzbuzz, fizzbuzz_range, to_string};
 
 #[rstest]
-#[case::regular_number_1(1, "1")]
-#[case::regular_number_2(2, "2")]
+#[case::number_1(1, "1")]
+#[case::number_2(2, "2")]
 #[case::fizz_for_3(3, "Fizz")]
-#[case::regular_number_4(4, "4")]
+#[case::number_4(4, "4")]
 #[case::buzz_for_5(5, "Buzz")]
 #[case::fizz_for_multiple_of_3(6, "Fizz")]
 #[case::buzz_for_multiple_of_5(10, "Buzz")]
-#[case::regular_number_13(13, "Fizz")]
+#[case::fizz_for_n_with_3_num_13(13, "Fizz")]
+#[case::number_14(14, "14")]
 #[case::fizzbuzz_for_multiple_of_3_and_5(15, "FizzBuzz")]
-#[case::regular_number_52(52, "Buzz")]
+#[case::buzz_for_n_with_5_num_52(52, "Buzz")]
 fn test_fizzbuzz(#[case] input: i32, #[case] expected: &str) {
     let result = fizzbuzz(input);
     assert_eq!(
@@ -23,7 +24,7 @@ fn test_fizzbuzz(#[case] input: i32, #[case] expected: &str) {
 }
 
 #[rstest]
-#[case::single_number(1, "1")]
+#[case::single_number_1(1, "1")]
 #[case::two_numbers(2, "1\n2")]
 #[case::complete_sequence_to_15(
     15,
