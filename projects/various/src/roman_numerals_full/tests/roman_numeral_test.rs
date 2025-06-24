@@ -1,112 +1,96 @@
+use rstest::rstest;
+
 use roman_numerals_full::{from_roman, to_roman};
 
-#[test]
-fn test_to_roman() {
-    let test_cases = [
-        (1, "I", false),
-        (2, "II", false),
-        (3, "III", false),
-        (4, "IV", false),
-        (5, "V", false),
-        (9, "IX", false),
-        (10, "X", false),
-        (40, "XL", false),
-        (50, "L", false),
-        (73, "LXXIII", false),
-        (90, "XC", false),
-        (93, "XCIII", false),
-        (100, "C", false),
-        (400, "CD", false),
-        (500, "D", false),
-        (900, "CM", false),
-        (1000, "M", false),
-        (1984, "MCMLXXXIV", false),
-        (2023, "MMXXIII", false),
-        (3999, "MMMCMXCIX", false),
-        (0, "", true),    // Error case
-        (4000, "", true), // Error case
-        (-1, "", true),   // Error case
-    ];
-
-    for (num, expected, has_error) in test_cases {
-        let result = to_roman(num);
-        if has_error {
-            assert!(
-                result.is_err(),
-                "to_roman({}) expected an error, got Ok({})",
-                num,
-                result.unwrap_or_default()
-            );
-        } else {
-            match result {
-                Ok(roman) => {
-                    assert_eq!(
-                        roman, expected,
-                        "to_roman({}) = {}, expected {}",
-                        num, roman, expected
-                    );
-                }
-                Err(e) => {
-                    panic!("to_roman({}): unexpected error: {}", num, e);
-                }
-            }
-        }
-    }
+#[rstest]
+#[case::one(1, "I")]
+#[case::two(2, "II")]
+#[case::three(3, "III")]
+#[case::four(4, "IV")]
+#[case::five(5, "V")]
+#[case::nine(9, "IX")]
+#[case::ten(10, "X")]
+#[case::forty(40, "XL")]
+#[case::fifty(50, "L")]
+#[case::seventy_three(73, "LXXIII")]
+#[case::ninety(90, "XC")]
+#[case::ninety_three(93, "XCIII")]
+#[case::hundred(100, "C")]
+#[case::four_hundred(400, "CD")]
+#[case::five_hundred(500, "D")]
+#[case::nine_hundred(900, "CM")]
+#[case::thousand(1000, "M")]
+#[case::year_1984(1984, "MCMLXXXIV")]
+#[case::year_2023(2023, "MMXXIII")]
+#[case::max_value_3999(3999, "MMMCMXCIX")]
+fn test_valid_to_roman_numerals(#[case] input: i32, #[case] expected: &str) {
+    let result = to_roman(input).unwrap();
+    assert_eq!(
+        result, expected,
+        "to_roman({}) = {}, expected: {}",
+        input, result, expected
+    );
 }
 
-#[test]
-fn test_from_roman() {
-    let test_cases = [
-        ("I", 1, false),
-        ("II", 2, false),
-        ("III", 3, false),
-        ("IV", 4, false),
-        ("V", 5, false),
-        ("IX", 9, false),
-        ("X", 10, false),
-        ("XL", 40, false),
-        ("L", 50, false),
-        ("LXXIII", 73, false),
-        ("XC", 90, false),
-        ("XCIII", 93, false),
-        ("C", 100, false),
-        ("CD", 400, false),
-        ("D", 500, false),
-        ("CM", 900, false),
-        ("M", 1000, false),
-        ("MCMLXXXIV", 1984, false),
-        ("MMXXIII", 2023, false),
-        ("MMMCMXCIX", 3999, false),
-        ("", 0, true),          // Error case
-        ("MMMM", 0, true),      // Error case (4000)
-        ("ABC", 0, true),       // Error case (invalid chars)
-        ("MMMCMXCIY", 0, true), // Error case (invalid char Y)
-    ];
+#[rstest]
+#[case::zero(0)]
+#[case::negative(-1)]
+#[case::too_large(4000)]
+fn test_invalid_to_roman_numerals(#[case] input: i32) {
+    let result = to_roman(input);
+    assert!(
+        result.is_err(),
+        "to_roman({}) expected an error, got Ok({})",
+        input,
+        result.unwrap_or_default()
+    );
+}
 
-    for (roman, expected, has_error) in test_cases {
-        let result = from_roman(roman);
-        if has_error {
-            assert!(
-                result.is_err(),
-                "from_roman({}) expected an error, got Ok({})",
-                roman,
-                result.unwrap_or_default()
-            );
-        } else {
-            match result {
-                Ok(num) => {
-                    assert_eq!(
-                        num, expected,
-                        "from_roman({}) = {}, expected {}",
-                        roman, num, expected
-                    );
-                }
-                Err(e) => {
-                    panic!("from_roman({}): unexpected error: {}", roman, e);
-                }
-            }
-        }
-    }
+#[rstest]
+#[case::single_numeral_i("I", 1)]
+#[case::two_numerals_ii("II", 2)]
+#[case::three_numerals_iii("III", 3)]
+#[case::subtractive_iv("IV", 4)]
+#[case::single_numeral_v("V", 5)]
+#[case::subtractive_ix("IX", 9)]
+#[case::single_numeral_x("X", 10)]
+#[case::subtractive_xl("XL", 40)]
+#[case::single_numeral_l("L", 50)]
+#[case::compound_lxxiii("LXXIII", 73)]
+#[case::subtractive_xc("XC", 90)]
+#[case::compound_xciii("XCIII", 93)]
+#[case::single_numeral_c("C", 100)]
+#[case::subtractive_cd("CD", 400)]
+#[case::single_numeral_d("D", 500)]
+#[case::subtractive_cm("CM", 900)]
+#[case::single_numeral_m("M", 1000)]
+#[case::year_1984("MCMLXXXIV", 1984)]
+#[case::year_2023("MMXXIII", 2023)]
+#[case::max_value_3999("MMMCMXCIX", 3999)]
+fn test_valid_from_roman_numerals(#[case] input: &str, #[case] expected: i32) {
+    let result = from_roman(input);
+    assert!(result.is_ok(), "Expected Ok for {}", input);
+    let result = result.unwrap();
+    assert_eq!(
+        result, expected,
+        "from_roman({}) = {}, expected {}",
+        input, result, expected
+    );
+}
+
+#[rstest]
+#[case::empty_string("")]
+#[case::exceeds_max_value("MMMM")]
+#[case::invalid_characters("ABC")]
+#[case::invalid_char_in_valid_numeral("MMMCMXCIY")]
+fn test_invalid_from_roman_numerals(#[case] input: &str) {
+    let result = from_roman(input);
+    assert!(
+        result.is_err(),
+        "from_roman({}) expected an error, got Ok({})",
+        input,
+        result.unwrap_or_default()
+    );
 }
 
 // Test round-trip conversion

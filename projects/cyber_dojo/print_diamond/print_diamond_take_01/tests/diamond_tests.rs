@@ -1,13 +1,15 @@
+use rstest::rstest;
+
 use print_diamond::Diamond;
 
-#[test]
-fn test_print_diamond_empty() {
-    let test_cases = vec![("", ""), (" ", ""), ("ñ", ""), ("FG", "")];
-
-    for (letter, expected) in test_cases {
-        let result = Diamond::new(letter).to_string();
-        assert_eq!(result, expected, "Diamond({}) failed", letter);
-    }
+#[rstest]
+#[case::empty_string("", "")]
+#[case::single_space(" ", "")]
+#[case::non_ascii_char("ñ", "")]
+#[case::multiple_chars("FG", "")]
+fn test_print_diamond_empty(#[case] input: &str, #[case] expected: &str) {
+    let result = Diamond::new(input).to_string();
+    assert_eq!(result, expected, "Diamond({}) failed", input);
 }
 
 #[test]

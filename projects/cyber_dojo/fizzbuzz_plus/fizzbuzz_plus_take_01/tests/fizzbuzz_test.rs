@@ -1,50 +1,41 @@
+use rstest::rstest;
+
 use fizzbuzz_plus::{fizzbuzz, fizzbuzz_range, to_string};
 
-#[test]
-fn test_fizzbuzz() {
-    let tests = [
-        (1, "1"),
-        (2, "2"),
-        (3, "Fizz"),
-        (4, "4"),
-        (5, "Buzz"),
-        (6, "Fizz"),
-        (10, "Buzz"),
-        (13, "Fizz"),
-        (15, "FizzBuzz"),
-        (52, "Buzz"),
-    ];
-
-    for (input, expected) in tests {
-        let result = fizzbuzz(input);
-        assert_eq!(
-            result, expected,
-            "fizzbuzz({}) = {:?}, want {:?}",
-            input, result, expected
-        );
-    }
+#[rstest]
+#[case::regular_number_1(1, "1")]
+#[case::regular_number_2(2, "2")]
+#[case::fizz_for_3(3, "Fizz")]
+#[case::regular_number_4(4, "4")]
+#[case::buzz_for_5(5, "Buzz")]
+#[case::fizz_for_multiple_of_3(6, "Fizz")]
+#[case::buzz_for_multiple_of_5(10, "Buzz")]
+#[case::regular_number_13(13, "Fizz")]
+#[case::fizzbuzz_for_multiple_of_3_and_5(15, "FizzBuzz")]
+#[case::regular_number_52(52, "Buzz")]
+fn test_fizzbuzz(#[case] input: i32, #[case] expected: &str) {
+    let result = fizzbuzz(input);
+    assert_eq!(
+        result, expected,
+        "fizzbuzz({}) = '{}', expected: '{}'",
+        input, result, expected
+    );
 }
 
-#[test]
-fn test_fizzbuzz_range() {
-    let tests = [
-        (1, "1"),
-        (2, "1\n2"),
-        (
-            15,
-            "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\n\
-            Fizz\nFizz\n14\nFizzBuzz",
-        ),
-    ];
-
-    for (input, expected) in tests {
-        let result = to_string(&fizzbuzz_range(input));
-        assert_eq!(
-            result, expected,
-            "to_string(fizzbuzz_range({})) = {:?}, want {:?}",
-            input, result, expected
-        );
-    }
+#[rstest]
+#[case::single_number(1, "1")]
+#[case::two_numbers(2, "1\n2")]
+#[case::complete_sequence_to_15(
+    15,
+    "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\nFizz\n14\nFizzBuzz"
+)]
+fn test_fizzbuzz_range(#[case] input: i32, #[case] expected: &str) {
+    let result = to_string(&fizzbuzz_range(input));
+    assert_eq!(
+        result, expected,
+        "to_string(fizzbuzz_range({})) = '{}', expected: '{}'",
+        input, result, expected
+    );
 }
 
 #[test]

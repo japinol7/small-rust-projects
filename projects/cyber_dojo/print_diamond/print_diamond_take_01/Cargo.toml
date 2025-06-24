@@ -5,3 +5,4 @@ edition = "2024"
 authors = ["Joan A. Pinol (@japinol7)"]
 
 [dependencies]
+rstest = "0.25.0"

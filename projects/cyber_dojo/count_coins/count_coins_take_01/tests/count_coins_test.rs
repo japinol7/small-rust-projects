@@ -1,19 +1,22 @@
+use rstest::rstest;
+
 use count_coins::CountCoins;
 
-#[test]
-fn test_changes() {
-    let tests = [(0, 0), (15, 6), (20, 9), (25, 13), (30, 18), (53, 49)];
-
+#[rstest]
+#[case::val_0(0, 0)]
+#[case::val_15(15, 6)]
+#[case::val_20(20, 9)]
+#[case::val_25(25, 13)]
+#[case::val_30(30, 18)]
+#[case::val_53(53, 49)]
+fn test_changes(#[case] amount: i32, #[case] expected: i32) {
     let cc = CountCoins::new();
-
-    for (amount, expected) in tests {
-        let result = cc.changes(amount);
-        assert_eq!(
-            result, expected,
-            "Changes({}) = {}, want {}",
-            amount, result, expected
-        );
-    }
+    let result = cc.changes(amount);
+    assert_eq!(
+        result, expected,
+        "Changes({}) = {}, expected: {}",
+        amount, result, expected
+    );
 }
 
 #[test]
@@ -24,7 +27,7 @@ fn test_changes_100_cents_and_output() {
 
     assert_eq!(
         result, expected,
-        "Changes(100) = {}, want {}",
+        "Changes(100) = {}, expected: {}",
         result, expected
     );
 

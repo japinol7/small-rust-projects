@@ -1,3 +1,5 @@
+use rstest::rstest;
+
 use lcd_digits::LcdDigits;
 use lcd_digits::lcd_digit_cell::{CELL_H, CELL_O, CELL_V, SEPARATOR};
 
@@ -50,32 +52,30 @@ fn replace_lcd_digit_separators(
     digit_cell_str.replace(separator, test_separator)
 }
 
-#[test]
-fn test_generate_lcd_digits() {
-    let tests = vec![
-        ("0", 0, DIGITS_REPR_0),
-        ("1", 1, DIGITS_REPR_1),
-        ("2", 2, DIGITS_REPR_2),
-        ("3", 3, DIGITS_REPR_3),
-        ("4", 4, DIGITS_REPR_4),
-        ("5", 5, DIGITS_REPR_5),
-        ("6", 6, DIGITS_REPR_6),
-        ("7", 7, DIGITS_REPR_7),
-        ("8", 8, DIGITS_REPR_8),
-        ("9", 9, DIGITS_REPR_9),
-        ("all digits", 1234567890, DIGITS_REPR_1234567890),
-        ("910", 910, DIGITS_REPR_910),
-    ];
-
+#[rstest]
+#[case::digit_zero(0, DIGITS_REPR_0)]
+#[case::digit_one(1, DIGITS_REPR_1)]
+#[case::digit_two(2, DIGITS_REPR_2)]
+#[case::digit_three(3, DIGITS_REPR_3)]
+#[case::digit_four(4, DIGITS_REPR_4)]
+#[case::digit_five(5, DIGITS_REPR_5)]
+#[case::digit_six(6, DIGITS_REPR_6)]
+#[case::digit_seven(7, DIGITS_REPR_7)]
+#[case::digit_eight(8, DIGITS_REPR_8)]
+#[case::digit_nine(9, DIGITS_REPR_9)]
+#[case::all_digits(1234567890, DIGITS_REPR_1234567890)]
+#[case::three_digits(910, DIGITS_REPR_910)]
+fn test_generate_lcd_digits(#[case] input: i32, #[case] expected: &str) {
     let lcd = LcdDigits::new();
+    let result = lcd.generate(input, None).unwrap();
+    let result = replace_lcd_digit_cells(&result);
+    let result = replace_lcd_digit_separators(&result, SEPARATOR, TEST_SEPARATOR);
 
-    for (name, input, expected) in tests {
-        let result = lcd.generate(input, None).unwrap();
-        let result = replace_lcd_digit_cells(&result);
-        let result = replace_lcd_digit_separators(&result, SEPARATOR, TEST_SEPARATOR);
-
-        assert_eq!(result, expected, "Test case '{}' failed", name);
-    }
+    assert_eq!(
+        result, expected,
+        "test_generate_lcd_digits for {} = \n'{}'\nexpected:\n'{}'",
+        input, result, expected
+    );
 }
 
 #[test]
