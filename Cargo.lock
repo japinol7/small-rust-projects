@@ -12,6 +12,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "align_columns"
+version = "0.1.0"
+dependencies = [
+ "rstest",
+]
+
+[[package]]
 name = "balanced_parentheses"
 version = "0.1.0"
 dependencies = [

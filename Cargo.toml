@@ -1,6 +1,7 @@
 [workspace]
 resolver = "3"
 members = [
+    "projects/cyber_dojo/align_columns/align_columns_take_01",
     "projects/cyber_dojo/balanced_parentheses/balanced_parentheses_take_01",
     "projects/cyber_dojo/count_coins/count_coins_take_01",
     "projects/cyber_dojo/filename_range/filename_range_take_01",
