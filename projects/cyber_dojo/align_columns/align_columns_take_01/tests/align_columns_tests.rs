@@ -60,14 +60,18 @@ fn test_align_columns_empty() {
 }
 
 #[rstest]
-#[case(ColumnAlignment::Left)]
-#[case(ColumnAlignment::Right)]
-#[case(ColumnAlignment::Center)]
-fn test_alignment_with_different_types(#[case] alignment: ColumnAlignment) {
+#[case::left(ColumnAlignment::Left, "case_left")]
+#[case::right(ColumnAlignment::Right, "case_right")]
+#[case::center(ColumnAlignment::Center, "case_center")]
+fn test_alignment_with_different_types(
+    #[case] alignment: ColumnAlignment,
+    #[case] test_name: &str,
+) {
     let input = "a$bc$def\nghi$j$klmno";
     let result = align_columns(&input.replace("$", COL_SEP), alignment);
     assert!(
         !result.is_empty(),
-        "Should return non-empty result for valid input"
+        "Should return non-empty result for valid input in {}",
+        test_name
     );
 }
