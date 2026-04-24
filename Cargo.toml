@@ -16,6 +16,7 @@ members = [
     "projects/cyber_dojo/reverse_roman/reverse_roman_take_01",
     "projects/cyber_dojo/roman_numerals/roman_numerals_take_01",
     "projects/various/src/hello_world_rust",
+    "projects/various/src/guess_number",
     "projects/various/src/quicksort",
     "projects/various/src/quicksort_int",
     "projects/various/src/roman_numerals_full"
